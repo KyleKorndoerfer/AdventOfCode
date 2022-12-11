@@ -15,7 +15,7 @@ public class Day01 : IPuzzle
 
 	public void Run(string dataDirectory)
 	{
-		Console.WriteLine(">> Day 01 - Calorie Counting");
+		Console.WriteLine("\n>> Day 01 - Calorie Counting");
 		_rawData = File.ReadAllLines(Path.Combine(dataDirectory, DataFile));
 
 		int calories = 0;

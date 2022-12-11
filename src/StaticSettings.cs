@@ -15,5 +15,5 @@ public static class StaticSettings
 	/// Puzzle to run within a given year (if specified). If null or empty, then
 	/// the most recent day for the year will be run.
 	/// </summary>
-	public static string AocDay = Environment.GetEnvironmentVariable("aocDay") ?? "01";
+	public static string AocDay = Environment.GetEnvironmentVariable("aocDay") ?? string.Empty;
 }
