@@ -12,7 +12,7 @@ public class Day02 : IPuzzle
 	public void Run(string dataDirectory)
 	{
 		Console.WriteLine("\n>> Day 02 - Rock, Paper, Scissors");
-		_data = File.ReadAllLines(Path.Combine(dataDirectory,DataFile));
+		_data = File.ReadAllLines(Path.Combine(dataDirectory, DataFile));
 
 		Part1(_data);
 		Part2(_data);
