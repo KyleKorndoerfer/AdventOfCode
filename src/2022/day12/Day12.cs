@@ -23,6 +23,8 @@ public class Day12 : IPuzzle
 	Point _start;
 	Point _dest;
 
+	List<Point> _lowPoints = new List<Point>();
+
 	public void Run(string dataDirectory)
 	{
 		Console.WriteLine("\n>> Day 12 - Hill Climbing Algorithm");
@@ -33,9 +35,31 @@ public class Day12 : IPuzzle
 
 		string [,] matrix = LoadMatrix(_rows, _cols);
 
+		Puzzle1(matrix);
+		Puzzle2(matrix);
+	}
+
+	void Puzzle1(string[,] matrix)
+	{
 		int shortestPath = Traverse(matrix, _start, _dest);
 
 		Console.WriteLine($"   Puzzle 1: shortest path = {shortestPath}");
+	}
+
+	void Puzzle2(string[,] matrix)
+	{
+		int shortestPath = int.MaxValue;
+
+		foreach (Point p in _lowPoints)
+		{
+			int distance = Traverse(matrix, p, _dest);
+
+			shortestPath = distance > 0
+					? Math.Min(shortestPath, distance)
+					: shortestPath;
+		}
+
+		Console.WriteLine($"   Puzzle 2: shortest path = {shortestPath}");
 	}
 
 	// traverse matrix using Breadth-First Search (BFS)
@@ -122,6 +146,11 @@ public class Day12 : IPuzzle
 				if (c == Start)
 				{
 					_start = new Point(i, j);
+					_lowPoints.Add(new Point(i, j));
+				}
+				else if (c == "a")
+				{
+					_lowPoints.Add(new Point(i, j));
 				}
 				else if (c == Dest)
 				{
