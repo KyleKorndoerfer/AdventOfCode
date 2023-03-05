@@ -2,25 +2,30 @@ namespace AdventOfCode2022;
 
 using AdventOfCode;
 
-public class Day09 : IPuzzle
+public class Day09 : PuzzleBase
 {
-	//readonly string DataFile = Path.Combine("day09", "Day09test.txt");
-	//readonly string DataFile = Path.Combine("day09", "Day09test2.txt");
-	readonly string DataFile = Path.Combine("day09", "Day09a.txt");
+	private readonly string _dataFile = Path.Combine(nameof(Day09).ToLower(),
+			//"Day09test.txt");
+			//"Day09test2.txt");
+			"Day09a.txt");
 
-	const int ShortRopeLength = 2;
-	const int LongRopeLength = 10;
+	private const int ShortRopeLength = 2;
+	private const int LongRopeLength = 10;
 
-	string[] _data;
-	Point[] knots = new Point[LongRopeLength];
+	private string[] _data;
+	private Point[] knots = new Point[LongRopeLength];
 
-	HashSet<Point> _shortVisited = new HashSet<Point>();
-	HashSet<Point> _longVisited = new HashSet<Point>();
+	private HashSet<Point> _shortVisited = new HashSet<Point>();
+	private HashSet<Point> _longVisited = new HashSet<Point>();
 
-	public void Run(string dataDirectory)
+	public Day09(string basePath) : base(basePath)
 	{
-		Console.WriteLine("\n>> Day 09 - Rope Bridge");
-		_data = File.ReadAllLines(Path.Combine(dataDirectory, DataFile));
+		Utils.WriteDayHeader("Day 09 - Rope Bridge");
+	}
+	
+	public override void Run()
+	{
+		_data = File.ReadAllLines(Path.Combine(BasePath, _dataFile));
 
 		foreach	(string line in _data)
 		{
@@ -57,8 +62,8 @@ public class Day09 : IPuzzle
 			}
 		}
 
-		Console.WriteLine($"   Puzzle 1: Visited locations = {_shortVisited.Count}");
-		Console.WriteLine($"   Puzzle 2: Visited locations = {_longVisited.Count}");
+		Utils.WriteResults($"Puzzle 1: Visited locations = {_shortVisited.Count}");
+		Utils.WriteResults($"Puzzle 2: Visited locations = {_longVisited.Count}");
 	}
 
 	struct Point

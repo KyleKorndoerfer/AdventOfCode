@@ -4,19 +4,23 @@ using System.Linq;
 
 using AdventOfCode;
 
-public class Day01 : IPuzzle
+public class Day01 : PuzzleBase
 {
-	readonly string DataFile = Path.Combine("day01", "Day01test.txt");
-	//readonly string DataFile = Path.Combine("day01", "Day01a.txt");
+	readonly string _dataFile = Path.Combine(nameof(Day01).ToLower(), 
+			//"Day01test.txt");
+			"Day01a.txt");
+	
+	private string[] _rawData;
 
-	string[] _rawData;
-
-	List<int> elves = new List<int>();
-
-	public void Run(string dataDirectory)
+	public Day01(string basePath) : base(basePath)
 	{
-		Console.WriteLine("\n>> Day 01 - Calorie Counting");
-		_rawData = File.ReadAllLines(Path.Combine(dataDirectory, DataFile));
+		Utils.WriteDayHeader("Day 01 - Calorie Counting");
+	}
+
+	public override void Run()
+	{
+		List<int> elves = new();
+		_rawData = File.ReadAllLines(Path.Combine(BasePath, _dataFile));
 
 		int calories = 0;
 		foreach (var line in _rawData)
@@ -33,9 +37,9 @@ public class Day01 : IPuzzle
 		}
 		elves.Add(calories); // add last row
 
-		Console.WriteLine($"   Part 1 - Most calories: {elves.Max()}");
+		Utils.WriteResults($"Part 1 - Most calories: {elves.Max()}");
 
 		int topCalories = elves.OrderByDescending(x => x).Take(3).Sum();
-		Console.WriteLine($"   Part 2 - Top 3 Elves calories: {topCalories}");
+		Utils.WriteResults($"Part 2 - Top 3 Elves calories: {topCalories}");
 	}
 }

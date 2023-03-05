@@ -2,17 +2,22 @@ namespace AdventOfCode2022;
 
 using AdventOfCode;
 
-public class Day04 : IPuzzle
+public class Day04 : PuzzleBase
 {
-	//readonly string DataFile = Path.Combine("day04", "Day04test.txt");
-	readonly string DataFile = Path.Combine("day04", "Day04a.txt");
+	private readonly string _dataFile = Path.Combine(nameof(Day04).ToLower(),
+			//"Day04test.txt");
+			"Day04a.txt");
 
-	string[] _data;
+	private string[] _data;
 
-	public void Run(string dataDirectory)
+	public Day04(string basePath) : base(basePath)
 	{
-		Console.WriteLine("\n>> Day 04 - Camp Cleanup");
-		_data = File.ReadAllLines(Path.Combine(dataDirectory, DataFile));
+		Utils.WriteDayHeader("Day 04 - Camp Cleanup");
+	}
+
+	public override void Run()
+	{
+		_data = File.ReadAllLines(Path.Combine(BasePath, _dataFile));
 
 		Puzzle1();
 		Puzzle2();
@@ -38,10 +43,10 @@ public class Day04 : IPuzzle
 
 			count += (leftContainsRight || rightContainsLeft) ? 1 : 0;
 
-			//Console.WriteLine($"DEBUG: Line = {line}; l[r] = {leftContainsRight}; r[l] = {rightContainsLeft}; Count = {count}");
+			//Utils.WriteDebug($"Line = {line}; l[r] = {leftContainsRight}; r[l] = {rightContainsLeft}; Count = {count}");
 		}
 
-		Console.WriteLine($"   Puzzle 1: Count = {count}");
+		Utils.WriteResults($"Puzzle 1: Count = {count}");
 	}
 
 	void Puzzle2()
@@ -60,7 +65,7 @@ public class Day04 : IPuzzle
 			count += leftList.Intersect(rightList).Any() ? 1 : 0;
 		}
 
-		Console.WriteLine($"   Part 2: Count = {count}");
+		Utils.WriteResults($"Part 2: Count = {count}");
 	}
 
 	private IList<int> RangeToList(string[] range)

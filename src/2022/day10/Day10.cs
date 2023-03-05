@@ -2,18 +2,22 @@ namespace AdventOfCode2022;
 
 using AdventOfCode;
 
-public class Day10 : IPuzzle
+public class Day10 : PuzzleBase
 {
-	//readonly string DataFile = Path.Combine("day10", "Day10test.txt");
-	//readonly string DataFile = Path.Combine("day10", "Day10test2.txt");
-	readonly string DataFile = Path.Combine("day10", "Day10a.txt");
+	private readonly string _dataFile = Path.Combine(nameof(Day10).ToLower(),
+			//"Day10test.txt");
+			//"Day10test2.txt");
+			"Day10a.txt");
 
-	string[] _data;
+	private string[] _data;
 
-	public void Run(string dataDirectory)
+	public Day10(string basePath) : base(basePath)
 	{
-		Console.WriteLine("\n>> Day 10 - Cathode-Ray Tube");
-		_data = File.ReadAllLines(Path.Combine(dataDirectory, DataFile));
+		Utils.WriteDayHeader("Day 10 - Cathode-Ray Tube");
+	}
+	public override void Run()
+	{
+		_data = File.ReadAllLines(Path.Combine(BasePath, _dataFile));
 
 		int cycle = 0;
 		int regX = 1;
@@ -57,10 +61,10 @@ public class Day10 : IPuzzle
 			//Console.WriteLine($"i = {i}; value = {registerHistory[i]}; Sum = {sum}");	// DEBUG
 		}
 
-		Console.WriteLine($"   Puzzle 1: Signal Strength Sum = {sum}");
+		Utils.WriteResults($"Puzzle 1: Signal Strength Sum = {sum}");
 
 		// Part 2 answer = PGHFGLUG
-		Console.WriteLine("   Puzzle 2:");
+		Console.WriteLine("     Puzzle 2:");
 		for (int i = 0; i < 6; i++)
 		{
 			Console.Write("\t");

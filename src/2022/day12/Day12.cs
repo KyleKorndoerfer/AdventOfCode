@@ -2,33 +2,37 @@ namespace AdventOfCode2022;
 
 using AdventOfCode;
 
-public class Day12 : IPuzzle
+public class Day12 : PuzzleBase
 {
-	//readonly string DataFile = Path.Combine("day12", "Day12test.txt");
-	readonly string DataFile = Path.Combine("day12", "Day12a.txt");
+	private readonly string _dataFile = Path.Combine(nameof(Day12).ToLower(),
+			//"Day12test.txt");
+			"Day12a.txt");
 
-	string[] _data;
+	private string[] _data;
 
-	const string Dest = "E";
-	const string Start ="S";
-	const string Elevations = "abcdefghijklmnopqrstuvwxyz";
+	private const string Dest = "E";
+	private const string Start ="S";
+	private const string Elevations = "abcdefghijklmnopqrstuvwxyz";
 
 	// used for directional movement (up, down, left, right)
-	static int[] rowNum = { -1, 1, 0, 0 };
-	static int[] colNum = { 0, 0, -1, 1 };
+	private static int[] rowNum = { -1, 1, 0, 0 };
+	private static int[] colNum = { 0, 0, -1, 1 };
 
-	int _rows;
-	int _cols;
+	private int _rows;
+	private int _cols;
 
-	Point _start;
-	Point _dest;
+	private Point _start;
+	private Point _dest;
 
-	List<Point> _lowPoints = new List<Point>();
+	private List<Point> _lowPoints = new List<Point>();
 
-	public void Run(string dataDirectory)
+	public Day12(string basePath) : base(basePath)
 	{
-		Console.WriteLine("\n>> Day 12 - Hill Climbing Algorithm");
-		_data = File.ReadAllLines(Path.Combine(dataDirectory, DataFile));
+		Utils.WriteDayHeader("Day 12 - Hill Climbing Algorithm");
+	}
+	public override void Run()
+	{
+		_data = File.ReadAllLines(Path.Combine(BasePath, _dataFile));
 
 		_rows = _data.Length;
 		_cols = _data[0].Length;
@@ -43,7 +47,7 @@ public class Day12 : IPuzzle
 	{
 		int shortestPath = Traverse(matrix, _start, _dest);
 
-		Console.WriteLine($"   Puzzle 1: shortest path = {shortestPath}");
+		Utils.WriteResults($"Puzzle 1: shortest path = {shortestPath}");
 	}
 
 	void Puzzle2(string[,] matrix)
@@ -59,7 +63,7 @@ public class Day12 : IPuzzle
 					: shortestPath;
 		}
 
-		Console.WriteLine($"   Puzzle 2: shortest path = {shortestPath}");
+		Utils.WriteResults($"Puzzle 2: shortest path = {shortestPath}");
 	}
 
 	// traverse matrix using Breadth-First Search (BFS)

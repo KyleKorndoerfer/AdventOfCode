@@ -4,25 +4,47 @@ using System.Reflection;
 
 using AdventOfCode;
 
+/// <summary>
+/// Runs Advent of Code puzzles for 2022.
+/// </summary>
 public class AdventOfCode2022 : IPuzzleYear
 {
-	const string AOC_DayPrefix = "Day";
+	private const string AocDayPrefix = "Day";
+	private const int Year = 2022;
 
-	public void Run(string dataDirectory)
+	private readonly Settings _settings;
+	private readonly string _basePath;
+	
+	public AdventOfCode2022(Settings settings, string basePath)
 	{
-		Console.WriteLine($"\n -=[ 2 0 2 2 ]=-\n");
+		ArgumentNullException.ThrowIfNull(settings);
+		ArgumentNullException.ThrowIfNull(basePath);
 
+		_settings = settings;
+		_basePath = basePath;
+	}
+	
+	public void Run()
+	{
+		Utils.WriteYearHeader("2 0 2 2");
+
+		// find implementations of 'IPuzzle' in the 'AdventOfCode2022' namespace
 		var puzzles = Assembly
 				.GetExecutingAssembly()
 				.GetTypes()
-				.Where(t => t.Namespace == "AdventOfCode2022" && t.GetInterfaces().Contains(typeof(IPuzzle)))
-				.OrderBy(t => t.Name);
+				.Where(t => t.Namespace == nameof(AdventOfCode2022) && t.GetInterfaces().Contains(typeof(IPuzzle)))
+				.OrderBy(t => t.Name)
+				.ToList();
 
-		var puzzle = string.IsNullOrEmpty(StaticSettings.AocDay)
-				? puzzles.TakeLast(1).First()
-				: puzzles.First(t => t.Name == $"{AOC_DayPrefix}{StaticSettings.AocDay}");
+		// build list of puzzles to run 
+		var puzzlesToRun = _settings.AocDay == default
+				? puzzles
+				: puzzles.Where(t => t.Name == $"{AocDayPrefix}{_settings.AocDay:00}").ToList();
 
-		IPuzzle instance = Activator.CreateInstance(puzzle) as IPuzzle;
-		instance.Run(Path.Combine(dataDirectory, "2022"));
+		foreach (var puzzle in puzzlesToRun)
+		{
+			var instance = Activator.CreateInstance(puzzle, Path.Combine(_basePath, $"{Year}")) as IPuzzle;
+			instance?.Run();			
+		}
 	}
 }

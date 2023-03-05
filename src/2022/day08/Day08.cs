@@ -2,28 +2,33 @@ namespace AdventOfCode2022;
 
 using AdventOfCode;
 
-public class Day08 : IPuzzle
+public class Day08 : PuzzleBase
 {
-	//readonly string DataFile = Path.Combine("day08", "Day08test.txt");
-	readonly string DataFile = Path.Combine("day08", "Day08a.txt");
+	private readonly string _dataFile = Path.Combine(nameof(Day08).ToLower(),
+			//"Day08test.txt");
+			"Day08a.txt");
 
-	string[] _data;
-	int[,] _matrix;
-	int _rows;
-	int _cols;
+	private string[] _data;
+	private int[,] _matrix;
+	private int _rows;
+	private int _cols;
 
-	public void Run(string dataDirectory)
+	public Day08(string basePath) : base(basePath)
 	{
-		Console.WriteLine("\n>> Day 08 - Treetop Tree House");
-		_data = File.ReadAllLines(Path.Combine(dataDirectory, DataFile));
+		Utils.WriteDayHeader("Day 08 - Treetop Tree House");
+	}
+	
+	public override void Run()
+	{
+		_data = File.ReadAllLines(Path.Combine(BasePath, _dataFile));
 		_rows = _data.Length;
 		_cols = _data[0].Length;
 
 		_matrix = InitializeMatrix(_rows, _cols);
 		var result = ProcessMatrix();
 
-		Console.WriteLine($"   Puzzle 1: # of visile trees = {result.VisibleTrees}");
-		Console.WriteLine($"   Puzzle 2: Maximum sight score = {result.MaxSightScore}");
+		Utils.WriteResults($"Puzzle 1: # of visible trees = {result.VisibleTrees}");
+		Utils.WriteResults($"Puzzle 2: Maximum sight score = {result.MaxSightScore}");
 	}
 
 	(int VisibleTrees, int MaxSightScore) ProcessMatrix()

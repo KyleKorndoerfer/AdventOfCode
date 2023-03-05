@@ -2,7 +2,7 @@ namespace AdventOfCode2022;
 
 using AdventOfCode;
 
-public class Day06 : IPuzzle
+public class Day06 : PuzzleBase
 {
 	/* Other sample inputs:
 	 *		bvwbjplbgvbhsrlpgdmjqwftvncz
@@ -10,18 +10,23 @@ public class Day06 : IPuzzle
 	 *		nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg
 	 *		zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw
 	 */
-	//readonly string DataFile = Path.Combine("day06", "Day06test.txt");
-	readonly string DataFile = Path.Combine("day06", "Day06a.txt");
+	private readonly string _dataFile = Path.Combine(nameof(Day06).ToLower(),
+			//"Day06test.txt");
+			"Day06a.txt");
 
-	string _data;
+	private string _data;
 
-	public void Run(string dataDirectory)
+	public Day06(string basePath) : base(basePath)
 	{
-		Console.WriteLine("\n>> Day 06 - Tuning Trouble");
-		_data = File.ReadAllText(Path.Combine(dataDirectory, DataFile));
+		Utils.WriteDayHeader("Day 06 - Tuning Trouble");
+	}
+	
+	public override void Run()
+	{
+		_data = File.ReadAllText(Path.Combine(BasePath, _dataFile));
 
-		Console.WriteLine($"   Puzzle 1: Marker position = {FindMarkerPosition(4)}");
-		Console.WriteLine($"   Puzzle 2: Marker position = {FindMarkerPosition(14)}");
+		Utils.WriteResults($"Puzzle 1: Marker position = {FindMarkerPosition(4)}");
+		Utils.WriteResults($"Puzzle 2: Marker position = {FindMarkerPosition(14)}");
 	}
 
 	private int FindMarkerPosition(int markerLength)
