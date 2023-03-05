@@ -1,29 +1,29 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using System.Reflection;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 using AdventOfCode;
 
-Console.WriteLine(" ________________");
-Console.WriteLine("| Advent of Code |");
-Console.WriteLine(" ----------------");
+// load configuration
+var config = new ConfigurationBuilder()
+		.AddJsonFile("appsettings.json", optional: true, reloadOnChange: false)
+		.AddUserSecrets<Program>(optional: false, reloadOnChange: false)
+		.AddEnvironmentVariables()
+		.Build();
 
-const string AOC_Prefix = "AdventOfCode";
+// register services
+IServiceCollection services = new ServiceCollection()
+		.Configure<Settings>(config.GetSection(Settings.SectionName))
+		.AddOptions()
+		.AddSingleton<Runner>();
 
-string baseDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+var serviceProvider = services.BuildServiceProvider();
 
-// reflect over the assembly looking for year implementations
-var puzzleYears = Assembly
-		.GetExecutingAssembly()
-		.GetTypes()
-		.Where(x => x.GetInterfaces().Contains(typeof(IPuzzleYear)))
-		.OrderBy(x => x);
+Utils.WriteBanner();
 
-// select the specified year or take the most recent one
-var puzzleYear = string.IsNullOrEmpty(StaticSettings.AocYear)
-		? puzzleYears.TakeLast(1).First()
-		: puzzleYears.First(t => t.Name == $"{AOC_Prefix}{StaticSettings.AocYear}");
+var runner = serviceProvider.GetService<Runner>();
+runner.Run();
 
-// create instance & run it
-IPuzzleYear instance = Activator.CreateInstance(puzzleYear) as IPuzzleYear;
-instance.Run(baseDirectory);
+Console.WriteLine($"{Utils.NL}Done!");
+

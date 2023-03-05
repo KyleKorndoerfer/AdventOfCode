@@ -2,17 +2,22 @@ namespace AdventOfCode2022;
 
 using AdventOfCode;
 
-public class Day02 : IPuzzle
+public class Day02 : PuzzleBase
 {
-	//readonly string DataFile = Path.Combine("day02", "Day02test.txt");
-	readonly string DataFile = Path.Combine("day02", "Day02a.txt");
-
-	string[] _data;
-
-	public void Run(string dataDirectory)
+	private readonly string _dataFile = Path.Combine(nameof(Day02).ToLower(),
+			//"Day02test.txt");
+			"Day02a.txt");
+	
+	private string[] _data;
+	
+	public Day02(string basePath) : base(basePath)
 	{
-		Console.WriteLine("\n>> Day 02 - Rock, Paper, Scissors");
-		_data = File.ReadAllLines(Path.Combine(dataDirectory, DataFile));
+		Utils.WriteDayHeader("Day 02 - Rock, Paper, Scissors");
+	}
+
+	public override void Run()
+	{
+		_data = File.ReadAllLines(Path.Combine(BasePath, _dataFile));
 
 		Part1(_data);
 		Part2(_data);
@@ -43,10 +48,10 @@ public class Day02 : IPuzzle
 		{
 			var outcome = outcomes.Single(x => x.Key == line);
 			score += outcome.Value;
-			//Console.WriteLine($"DEBUG: {line} = {outcome.Value}; Score = {score}");
+			//Utils.WriteDebug($"{line} = {outcome.Value}; Score = {score}");
 		}
 
-		Console.WriteLine($"   Part 1 - Score = {score}");
+		Utils.WriteResults($"Part 1 - Score = {score}");
 	}
 
 	void Part2(string[] data)
@@ -74,15 +79,15 @@ public class Day02 : IPuzzle
 		{
 			var outcome = outcomes.Single(x => x.Key == line);
 			score += outcome.Value;
-			//Console.WriteLine($"DEBUG: {line} = {outcome.Value}; Score = {score}");
+			//Utils.WriteDebug($"{line} = {outcome.Value}; Score = {score}");
 		}
 
-		Console.WriteLine($"   Part 2 - Score = {score}");
+		Utils.WriteResults($"Part 2 - Score = {score}");
 	}
 
 	static class Points
 	{
-		public static int Rock = 1;		// A,  X
+		public static int Rock = 1;		// A, X
 		public static int Paper = 2;	// B, Y
 		public static int Scissors = 3;	// C, Z
 

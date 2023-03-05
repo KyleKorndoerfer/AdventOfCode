@@ -2,19 +2,23 @@ namespace AdventOfCode2022;
 
 using AdventOfCode;
 
-public class Day11 : IPuzzle
+public class Day11 : PuzzleBase
 {
-	//readonly string DataFile = Path.Combine("day11", "Day11test.txt");
-	readonly string DataFile = Path.Combine("day11", "Day11a.txt");
+	private readonly string DataFile = Path.Combine(nameof(Day11).ToLower(),
+			//"Day11test.txt");
+			"Day11a.txt");
 
-	string[] _data;
+	private string[] _data;
 
-	List<Monkey> _monkeys;
+	private List<Monkey> _monkeys;
 
-	public void Run(string dataDirectory)
+	public Day11(string basePath) : base(basePath)
 	{
-		Console.WriteLine("\n>> Day 11 - Monkey in the Middle");
-		_data = File.ReadAllLines(Path.Combine(dataDirectory, DataFile));
+		Utils.WriteDayHeader("Day 11 - Monkey in the Middle");
+	}
+	public override void Run()
+	{
+		_data = File.ReadAllLines(Path.Combine(BasePath, DataFile));
 
 		_monkeys = InitializeMonkeys();
 		Puzzle1();
@@ -60,7 +64,7 @@ public class Day11 : IPuzzle
 				.Select(x => x.Inspections)
 				.Aggregate((a, b) => a * b);
 
-		Console.WriteLine($"   Puzzle 1: {sumOfTopInspections}");
+		Utils.WriteResults($"Puzzle 1: {sumOfTopInspections}");
 	}
 
 	void Puzzle2()
@@ -74,14 +78,13 @@ public class Day11 : IPuzzle
 			}
 		}
 
-		Console.WriteLine("   Puzzle 1: {0}",
+		Console.WriteLine($"     Puzzle 1: {0}",
 			_monkeys
 				.OrderByDescending(x => x.Inspections)
 				.Take(2)
 				.Select(x => x.Inspections)
 				.Aggregate((a, b) => a * b));
 	}
-
 
 	/* Helper classes */
 	class Monkey

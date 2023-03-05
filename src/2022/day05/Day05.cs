@@ -4,19 +4,23 @@ using System.Text;
 
 using AdventOfCode;
 
-public class Day05 : IPuzzle
+public class Day05 : PuzzleBase
 {
-	//readonly string DataFile = Path.Combine("day05", "Day05test.txt");
-	readonly string DataFile = Path.Combine("day05", "Day05a.txt");
+	private readonly string _dataFile = Path.Combine(nameof(Day05).ToLower(),
+			//"Day05test.txt");
+			"Day05a.txt");
 
-	string[] _data;
+	private string[] _data;
+	private Stack<string>[] _stacks;
 
-	Stack<string>[] _stacks;
-
-	public void Run(string dataDirectory)
+	public Day05(string basePath) : base(basePath)
 	{
-		Console.WriteLine("\n>> Day 05 - Supply Stacks");
-		_data = File.ReadAllLines(Path.Combine(dataDirectory, DataFile));
+		Utils.WriteDayHeader("Day 05 - Supply Stacks");
+	}
+	
+	public override void Run()
+	{
+		_data = File.ReadAllLines(Path.Combine(BasePath, _dataFile));
 
 		Puzzle1();
 		Puzzle2();
@@ -40,7 +44,7 @@ public class Day05 : IPuzzle
 			}
 		}
 
-		Console.WriteLine($"   Puzzle 1: Message = {GenerateMessage()}");
+		Utils.WriteResults($"Puzzle 1: Message = {GenerateMessage()}");
 	}
 
 	void Puzzle2()
@@ -67,7 +71,7 @@ public class Day05 : IPuzzle
 			}
 		}
 
-		Console.WriteLine($"   Puzzle 2: Message = {GenerateMessage()}");
+		Utils.WriteResults($"Puzzle 2: Message = {GenerateMessage()}");
 	}
 
 	int Initialize(string[] data)

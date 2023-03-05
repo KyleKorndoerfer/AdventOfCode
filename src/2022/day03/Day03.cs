@@ -2,19 +2,23 @@ namespace AdventOfCode2022;
 
 using AdventOfCode;
 
-public class Day03 : IPuzzle
+public class Day03 : PuzzleBase
 {
-	const string posValues = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	private const string PosValues = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	private readonly string _dataFile = Path.Combine(nameof(Day03).ToLower(), 
+			//"Day03test.txt");
+			"Day03a.txt");
 
-	//readonly string DataFile = Path.Combine("day03", "Day03test.txt");
-	readonly string DataFile = Path.Combine("day03", "Day03a.txt");
+	private string[] _data;
 
-	string[] _data;
-
-	public void Run(string dataDirectory)
+	public Day03(string basePath) : base(basePath)
 	{
-		Console.WriteLine("\n>> Day 03 - Rucksack Reorganization");
-		_data = File.ReadAllLines(Path.Combine(dataDirectory, DataFile));
+		Utils.WriteDayHeader("Day 03 - Rucksack Reorganization");
+	}
+
+	public override void Run()
+	{
+		_data = File.ReadAllLines(Path.Combine(BasePath, _dataFile));
 
 		Puzzle1();
 		Puzzle2();
@@ -31,11 +35,11 @@ public class Day03 : IPuzzle
 			var right = line.Substring(middle, line.Length - middle).ToArray();
 			var common = left.Intersect(right).First();
 
-			sum += posValues.IndexOf(common);
-			//Console.WriteLine($"DEBUG: char = {common}; Pos = {posValues.IndexOf(common)}; Sum = {sum}");
+			sum += PosValues.IndexOf(common);
+			//Utils.WriteDebug($"char = {common}; Pos = {PosValues.IndexOf(common)}; Sum = {sum}");
 		}
 
-		Console.WriteLine($"   Part 1: Sum = {sum}");
+		Utils.WriteResults($"Part 1: Sum = {sum}");
 	}
 
 	void Puzzle2()
@@ -50,10 +54,10 @@ public class Day03 : IPuzzle
 
 			var common = elf1.Intersect(elf2).Intersect(elf3).First();
 
-			sum += posValues.IndexOf(common);
-			//Console.WriteLine($"DEBUG: common = {common}; Pos = {posValues.IndexOf(common)}; Sum = {sum}");
+			sum += PosValues.IndexOf(common);
+			//Utils.WriteDayHeader($"common = {common}; Pos = {PosValues.IndexOf(common)}; Sum = {sum}");
 		}
 
-		Console.WriteLine($"   Part 2: Sum = {sum}");
+		Utils.WriteResults($"Part 2: Sum = {sum}");
 	}
 }

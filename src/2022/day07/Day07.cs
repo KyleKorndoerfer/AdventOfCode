@@ -2,17 +2,22 @@ namespace AdventOfCode2022;
 
 using AdventOfCode;
 
-public class Day07 : IPuzzle
+public class Day07 : PuzzleBase
 {
-	//readonly string DataFile = Path.Combine("day07", "Day07test.txt");
-	readonly string DataFile = Path.Combine("day07", "Day07a.txt");
+	private readonly string _dataFile = Path.Combine(nameof(Day07).ToLower(),
+			//"Day07test.txt");
+			"Day07a.txt");
 
-	string[] _data;
+	private string[] _data;
 
-	public void Run(string dataDirectory)
+	public Day07(string basePath) : base(basePath)
 	{
-		Console.WriteLine("\n>> Day 07 - No Space Left On Device");
-		_data = File.ReadAllLines(Path.Combine(dataDirectory, DataFile));
+		Utils.WriteDayHeader("Day 07 - No Space Left On Device");
+	}
+	
+	public override void Run()
+	{
+		_data = File.ReadAllLines(Path.Combine(BasePath, _dataFile));
 
 		DirectoryNode filesystem = BuildFilesystem();
 		//PrintFilesystem(filesystem);	// DEBUG
@@ -33,7 +38,7 @@ public class Day07 : IPuzzle
 	{
 		long sum = directorySizes.Where(x => x <= 100000).Sum();
 
-		Console.WriteLine($"   Puzzle 1: Sum = {sum}");
+		Utils.WriteResults($"Puzzle 1: Sum = {sum}");
 	}
 
 	void Puzzle2(List<long> directorySizes)
@@ -48,7 +53,7 @@ public class Day07 : IPuzzle
 
 		long minSizeToDelete = directorySizes.Where(x => x >= minSpaceToFree).Min();
 
-		Console.WriteLine($"   Puzzle 2: Minumum size = {minSizeToDelete}");
+		Utils.WriteResults($"Puzzle 2: Minumum size = {minSizeToDelete}");
 	}
 
 	DirectoryNode BuildFilesystem()
