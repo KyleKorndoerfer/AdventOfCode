@@ -4,20 +4,19 @@ using AdventOfCode;
 
 public class Day07 : PuzzleBase
 {
-	private readonly string _dataFile = Path.Combine(nameof(Day07).ToLower(),
-			//"Day07test.txt");
-			"Day07a.txt");
-
 	private string[] _data;
 
-	public Day07(string basePath) : base(basePath)
+	public Day07(int year, Downloader downloader) : base(year, downloader)
 	{
 		Utils.WriteDayHeader("Day 07 - No Space Left On Device");
 	}
 	
-	public override void Run()
+	public override async Task Run()
 	{
-		_data = File.ReadAllLines(Path.Combine(BasePath, _dataFile));
+		_data = await Downloader
+				//.GetInput(Year, 7, "Day07test.txt")
+				.GetInput(Year, 7)
+				.ConfigureAwait(false);
 
 		DirectoryNode filesystem = BuildFilesystem();
 		//PrintFilesystem(filesystem);	// DEBUG

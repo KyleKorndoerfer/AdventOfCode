@@ -53,4 +53,15 @@ public static class Utils
     {
         Console.WriteLine($"DEBUG: {message}");
     }
+
+    /// <summary>
+    /// Outputs and ERROR to the console.
+    /// </summary>
+    /// <param name="message">The error message to display.</param>
+    /// <param name="e">The exception being thrown.</param>
+    public static void WriteError(string message, Exception e)
+    {
+        Console.WriteLine($"ERROR: {message}");
+        Console.WriteLine(e);
+    }
 }

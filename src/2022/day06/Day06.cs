@@ -10,20 +10,20 @@ public class Day06 : PuzzleBase
 	 *		nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg
 	 *		zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw
 	 */
-	private readonly string _dataFile = Path.Combine(nameof(Day06).ToLower(),
-			//"Day06test.txt");
-			"Day06a.txt");
 
 	private string _data;
 
-	public Day06(string basePath) : base(basePath)
+	public Day06(int year, Downloader downloader) : base(year, downloader)
 	{
 		Utils.WriteDayHeader("Day 06 - Tuning Trouble");
 	}
 	
-	public override void Run()
+	public override async Task Run()
 	{
-		_data = File.ReadAllText(Path.Combine(BasePath, _dataFile));
+		_data = (await Downloader
+				//.GetInput(Year, 6, "Day06test.txt")
+				.GetInput(Year, 6)
+				.ConfigureAwait(false))[0];
 
 		Utils.WriteResults($"Puzzle 1: Marker position = {FindMarkerPosition(4)}");
 		Utils.WriteResults($"Puzzle 2: Marker position = {FindMarkerPosition(14)}");

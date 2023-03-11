@@ -4,11 +4,6 @@ using AdventOfCode;
 
 public class Day09 : PuzzleBase
 {
-	private readonly string _dataFile = Path.Combine(nameof(Day09).ToLower(),
-			//"Day09test.txt");
-			//"Day09test2.txt");
-			"Day09a.txt");
-
 	private const int ShortRopeLength = 2;
 	private const int LongRopeLength = 10;
 
@@ -18,14 +13,18 @@ public class Day09 : PuzzleBase
 	private HashSet<Point> _shortVisited = new HashSet<Point>();
 	private HashSet<Point> _longVisited = new HashSet<Point>();
 
-	public Day09(string basePath) : base(basePath)
+	public Day09(int year, Downloader downloader) : base(year, downloader)
 	{
 		Utils.WriteDayHeader("Day 09 - Rope Bridge");
 	}
 	
-	public override void Run()
+	public override async Task Run()
 	{
-		_data = File.ReadAllLines(Path.Combine(BasePath, _dataFile));
+		_data = await Downloader
+				//.GetInput(Year, 9, "Day09test.txt")
+				//.GetInput(Year, 9, "Day09test2.txt")
+				.GetInput(Year, 9)
+				.ConfigureAwait(false);
 
 		foreach	(string line in _data)
 		{

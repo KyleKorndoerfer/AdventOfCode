@@ -27,4 +27,9 @@ public class Settings
     /// </summary>
     /// <remarks>This is only used for download the puzzle input.</remarks>
     public string AocSessionToken { get; set; }
+    
+    /// <summary>
+    /// The root folder for the solution.
+    /// </summary>
+    public string SolutionRoot { get; set; }
 }

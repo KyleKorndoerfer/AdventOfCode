@@ -4,23 +4,23 @@ using AdventOfCode;
 
 public class Day08 : PuzzleBase
 {
-	private readonly string _dataFile = Path.Combine(nameof(Day08).ToLower(),
-			//"Day08test.txt");
-			"Day08a.txt");
-
 	private string[] _data;
 	private int[,] _matrix;
 	private int _rows;
 	private int _cols;
 
-	public Day08(string basePath) : base(basePath)
+	public Day08(int year, Downloader downloader) : base(year, downloader)
 	{
 		Utils.WriteDayHeader("Day 08 - Treetop Tree House");
 	}
 	
-	public override void Run()
+	public override async Task Run()
 	{
-		_data = File.ReadAllLines(Path.Combine(BasePath, _dataFile));
+		_data = await Downloader
+				//.GetInput(Year, 8, "Day08text.txt")
+				.GetInput(Year, 8)
+				.ConfigureAwait(false);
+		
 		_rows = _data.Length;
 		_cols = _data[0].Length;
 

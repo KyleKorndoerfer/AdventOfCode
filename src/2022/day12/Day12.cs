@@ -4,10 +4,6 @@ using AdventOfCode;
 
 public class Day12 : PuzzleBase
 {
-	private readonly string _dataFile = Path.Combine(nameof(Day12).ToLower(),
-			//"Day12test.txt");
-			"Day12a.txt");
-
 	private string[] _data;
 
 	private const string Dest = "E";
@@ -26,13 +22,16 @@ public class Day12 : PuzzleBase
 
 	private List<Point> _lowPoints = new List<Point>();
 
-	public Day12(string basePath) : base(basePath)
+	public Day12(int year, Downloader downloader) : base(year, downloader)
 	{
 		Utils.WriteDayHeader("Day 12 - Hill Climbing Algorithm");
 	}
-	public override void Run()
+	public override async Task Run()
 	{
-		_data = File.ReadAllLines(Path.Combine(BasePath, _dataFile));
+		_data = await Downloader
+				//.GetInput(Year, 12, "Day12test.txt")
+				.GetInput(Year, 12)
+				.ConfigureAwait(false);
 
 		_rows = _data.Length;
 		_cols = _data[0].Length;

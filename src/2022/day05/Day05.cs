@@ -6,21 +6,20 @@ using AdventOfCode;
 
 public class Day05 : PuzzleBase
 {
-	private readonly string _dataFile = Path.Combine(nameof(Day05).ToLower(),
-			//"Day05test.txt");
-			"Day05a.txt");
-
 	private string[] _data;
 	private Stack<string>[] _stacks;
 
-	public Day05(string basePath) : base(basePath)
+	public Day05(int year, Downloader downloader) : base(year, downloader)
 	{
 		Utils.WriteDayHeader("Day 05 - Supply Stacks");
 	}
 	
-	public override void Run()
+	public override async Task Run()
 	{
-		_data = File.ReadAllLines(Path.Combine(BasePath, _dataFile));
+		_data = await Downloader
+				//.GetInput(Year, 5, "Day05test.txt")
+				.GetInput(Year, 5)
+				.ConfigureAwait(false);
 
 		Puzzle1();
 		Puzzle2();
@@ -91,7 +90,7 @@ public class Day05 : PuzzleBase
 			lineCount++;
 		} while (!string.IsNullOrEmpty(line));
 
-		string stackNumbers = startingStackLines.Pop();
+		string stackNumbers = startingStackLines.Pop().Trim();
 		int numOfStacks = Int32.Parse(stackNumbers.Substring(stackNumbers.Length - 1, 1));
 		_stacks = new Stack<string>[numOfStacks];
 

@@ -5,17 +5,27 @@
 /// </summary>
 public abstract class PuzzleBase : IPuzzle
 {
-    protected readonly string BasePath;
-
     /// <summary>
     /// Initializes a new instance.
     /// </summary>
-    /// <param name="basePath">The base path to the data directory.</param>
-    protected PuzzleBase(string basePath)
+    /// <param name="year">The year for the puzzle.</param>
+    /// <param name="downloader">The downloader instance to retrieve files.</param>
+    protected PuzzleBase(int year, Downloader downloader)
     {
-        ArgumentNullException.ThrowIfNull(basePath);
-        BasePath = basePath;
+        ArgumentNullException.ThrowIfNull(downloader);
+        Downloader = downloader;
+
+        if (year == default)
+        {
+            throw new ArgumentException("Year must be specified", nameof(year));
+        }
+        
+        Year = year;
     }
 
-    public abstract void Run();
+    protected Downloader Downloader { get; init; }
+    
+    protected int Year { get; init; }
+    
+    public abstract Task Run();
 }

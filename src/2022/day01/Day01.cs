@@ -6,24 +6,23 @@ using AdventOfCode;
 
 public class Day01 : PuzzleBase
 {
-	readonly string _dataFile = Path.Combine(nameof(Day01).ToLower(), 
-			//"Day01test.txt");
-			"Day01a.txt");
-	
-	private string[] _rawData;
+	private string[] _data;
 
-	public Day01(string basePath) : base(basePath)
+	public Day01(int year, Downloader downloader) : base(year, downloader)
 	{
 		Utils.WriteDayHeader("Day 01 - Calorie Counting");
 	}
 
-	public override void Run()
+	public override async Task Run()
 	{
 		List<int> elves = new();
-		_rawData = File.ReadAllLines(Path.Combine(BasePath, _dataFile));
+		_data = await Downloader
+				//.GetInput(Year, 1, "Day01test.txt")
+				.GetInput(Year, 1)
+				.ConfigureAwait(false);
 
 		int calories = 0;
-		foreach (var line in _rawData)
+		foreach (var line in _data)
 		{
 			if (string.IsNullOrEmpty(line))
 			{

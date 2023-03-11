@@ -1,6 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using AdventOfCode;
@@ -13,17 +11,17 @@ var config = new ConfigurationBuilder()
 		.Build();
 
 // register services
-IServiceCollection services = new ServiceCollection()
+var services = new ServiceCollection()
 		.Configure<Settings>(config.GetSection(Settings.SectionName))
 		.AddOptions()
-		.AddSingleton<Runner>();
+		.AddSingleton<Runner>()
+		.AddSingleton<Downloader>();
 
 var serviceProvider = services.BuildServiceProvider();
 
 Utils.WriteBanner();
 
 var runner = serviceProvider.GetService<Runner>();
-runner.Run();
+await runner.Run().ConfigureAwait(false);
 
 Console.WriteLine($"{Utils.NL}Done!");
-
