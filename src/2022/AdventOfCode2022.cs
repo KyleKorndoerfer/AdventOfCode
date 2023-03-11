@@ -13,18 +13,18 @@ public class AdventOfCode2022 : IPuzzleYear
 	private const int Year = 2022;
 
 	private readonly Settings _settings;
-	private readonly string _basePath;
+	private readonly Downloader _downloader;
 	
-	public AdventOfCode2022(Settings settings, string basePath)
+	public AdventOfCode2022(Settings settings, Downloader downloader)
 	{
 		ArgumentNullException.ThrowIfNull(settings);
-		ArgumentNullException.ThrowIfNull(basePath);
+		ArgumentNullException.ThrowIfNull(downloader);
 
 		_settings = settings;
-		_basePath = basePath;
+		_downloader = downloader;
 	}
 	
-	public void Run()
+	public async Task Run()
 	{
 		Utils.WriteYearHeader("2 0 2 2");
 
@@ -43,8 +43,8 @@ public class AdventOfCode2022 : IPuzzleYear
 
 		foreach (var puzzle in puzzlesToRun)
 		{
-			var instance = Activator.CreateInstance(puzzle, Path.Combine(_basePath, $"{Year}")) as IPuzzle;
-			instance?.Run();			
+			var instance = Activator.CreateInstance(puzzle, Year, _downloader) as IPuzzle;
+			await instance.Run().ConfigureAwait(false);			
 		}
 	}
 }

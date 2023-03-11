@@ -4,32 +4,26 @@ using AdventOfCode;
 
 public class Day11 : PuzzleBase
 {
-	private readonly string DataFile = Path.Combine(nameof(Day11).ToLower(),
-			//"Day11test.txt");
-			"Day11a.txt");
-
 	private string[] _data;
 
-	private List<Monkey> _monkeys;
-
-	public Day11(string basePath) : base(basePath)
+	public Day11(int year, Downloader downloader) : base(year, downloader)
 	{
 		Utils.WriteDayHeader("Day 11 - Monkey in the Middle");
 	}
-	public override void Run()
+	public override async Task Run()
 	{
-		_data = File.ReadAllLines(Path.Combine(BasePath, DataFile));
-
-		_monkeys = InitializeMonkeys();
+		_data = await Downloader
+				//.GetInput(Year, 11, "Day11test.txt")
+				.GetInput(Year, 11)
+				.ConfigureAwait(false);
+		
 		Puzzle1();
-
-		_monkeys = InitializeMonkeys();
 		Puzzle2();
 	}
 
 	List<Monkey> InitializeMonkeys()
 	{
-		int numOfMonkeys = _data.Where(x => string.IsNullOrEmpty(x)).Count() + 1;
+		int numOfMonkeys = _data.Count(x => string.IsNullOrEmpty(x)) + 1;
 		List<Monkey> monkeys = new List<Monkey>(numOfMonkeys);
 
 		// create monkeys so they can reference each other
@@ -38,7 +32,7 @@ public class Day11 : PuzzleBase
 			monkeys.Add(new Monkey());
 		}
 
-		// intialize each monkey
+		// initialize each monkey
 		for (int i = 0; i < numOfMonkeys; i++)
 		{
 			List<string> monkeyData = _data.Skip((i * 7) + 1).Take(5).ToList();
@@ -50,15 +44,17 @@ public class Day11 : PuzzleBase
 
 	void Puzzle1()
 	{
+		var monkeys = InitializeMonkeys();
+		
 		for (int i = 0; i < 20; i++)
 		{
-			foreach(Monkey monkey in _monkeys)
+			foreach(Monkey monkey in monkeys)
 			{
 				monkey.InspectAndThrow(3);
 			}
 		}
 
-		long sumOfTopInspections = _monkeys
+		long sumOfTopInspections = monkeys
 				.OrderByDescending(x => x.Inspections)
 				.Take(2)
 				.Select(x => x.Inspections)
@@ -69,17 +65,19 @@ public class Day11 : PuzzleBase
 
 	void Puzzle2()
 	{
-		int reliefFactor = _monkeys.Select(x => x.TestDivisor).Aggregate((a, b) => a * b);
+		var monkeys = InitializeMonkeys();
+		
+		int reliefFactor = monkeys.Select(x => x.TestDivisor).Aggregate((a, b) => a * b);
 		for (int i = 0; i < 10000; i++)
 		{
-			foreach(Monkey monkey in _monkeys)
+			foreach(Monkey monkey in monkeys)
 			{
 				monkey.InspectAndThrow(reliefFactor, true);
 			}
 		}
 
-		Console.WriteLine($"     Puzzle 1: {0}",
-			_monkeys
+		Console.WriteLine("     Puzzle 2: {0}",
+			monkeys
 				.OrderByDescending(x => x.Inspections)
 				.Take(2)
 				.Select(x => x.Inspections)

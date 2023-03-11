@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.Options;
-
-namespace AdventOfCode;
+﻿namespace AdventOfCode;
 
 using System;
 using System.Reflection;
+
+using Microsoft.Extensions.Options;
 
 /// <summary>
 /// Root runner for the Advent of Code puzzles.
@@ -13,25 +13,27 @@ public class Runner
     /// <summary>Prefix for the 'Year' classes.</summary>
     private const string AocPrefix = "AdventOfCode";
 
-    private readonly string _baseDirectory;
+    private readonly Downloader _downloader;
     private readonly Settings _settings;
 
     /// <summary>
     /// Initializes a new instance.
     /// </summary>
     /// <param name="options">Loaded settings from configuration sources.</param>
-    public Runner(IOptions<Settings> options)
+    /// <param name="downloader">Download manager for input files.</param>
+    public Runner(IOptions<Settings> options, Downloader downloader)
     {
         ArgumentNullException.ThrowIfNull(options);
+        ArgumentNullException.ThrowIfNull(downloader);
 
-        _baseDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         _settings = options.Value;
+        _downloader = downloader;
     }
 
     /// <summary>
     /// Execute the chosen puzzle(s) for this year.
     /// </summary>
-    public void Run()
+    public async Task Run()
     {
         // reflect over the assembly looking for implementations of 'IPuzzleYear'
         var puzzleYears = Assembly
@@ -49,8 +51,8 @@ public class Runner
 
         foreach (var puzzleYear in puzzleYears)
         {
-            var instance = Activator.CreateInstance(puzzleYear, _settings, _baseDirectory) as IPuzzleYear;
-            instance?.Run(); 
+            var instance = Activator.CreateInstance(puzzleYear, _settings, _downloader) as IPuzzleYear;
+            await instance.Run().ConfigureAwait(false); 
         }
     }
 }

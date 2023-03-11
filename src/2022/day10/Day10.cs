@@ -4,21 +4,20 @@ using AdventOfCode;
 
 public class Day10 : PuzzleBase
 {
-	private readonly string _dataFile = Path.Combine(nameof(Day10).ToLower(),
-			//"Day10test.txt");
-			//"Day10test2.txt");
-			"Day10a.txt");
-
 	private string[] _data;
 
-	public Day10(string basePath) : base(basePath)
+	public Day10(int year, Downloader downloader) : base(year, downloader)
 	{
 		Utils.WriteDayHeader("Day 10 - Cathode-Ray Tube");
 	}
-	public override void Run()
+	public override async Task Run()
 	{
-		_data = File.ReadAllLines(Path.Combine(BasePath, _dataFile));
-
+		_data = await Downloader
+				//.GetInput(Year, 10, "Day10test.txt")
+				//.GetInput(Year, 10, "Day10test2.txt")
+				.GetInput(Year, 10)
+				.ConfigureAwait(false);
+		
 		int cycle = 0;
 		int regX = 1;
 		Dictionary<int, int> registerHistory = new Dictionary<int, int>();

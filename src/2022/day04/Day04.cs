@@ -4,20 +4,19 @@ using AdventOfCode;
 
 public class Day04 : PuzzleBase
 {
-	private readonly string _dataFile = Path.Combine(nameof(Day04).ToLower(),
-			//"Day04test.txt");
-			"Day04a.txt");
-
 	private string[] _data;
 
-	public Day04(string basePath) : base(basePath)
+	public Day04(int year, Downloader downloader) : base(year, downloader)
 	{
 		Utils.WriteDayHeader("Day 04 - Camp Cleanup");
 	}
 
-	public override void Run()
+	public override async Task Run()
 	{
-		_data = File.ReadAllLines(Path.Combine(BasePath, _dataFile));
+		_data = await Downloader
+				//.GetInput(Year, 4, "Day04test.txt")
+				.GetInput(Year, 4)
+				.ConfigureAwait(false);
 
 		Puzzle1();
 		Puzzle2();

@@ -5,20 +5,20 @@ using AdventOfCode;
 public class Day03 : PuzzleBase
 {
 	private const string PosValues = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	private readonly string _dataFile = Path.Combine(nameof(Day03).ToLower(), 
-			//"Day03test.txt");
-			"Day03a.txt");
 
 	private string[] _data;
 
-	public Day03(string basePath) : base(basePath)
+	public Day03(int year, Downloader downloader) : base(year, downloader)
 	{
 		Utils.WriteDayHeader("Day 03 - Rucksack Reorganization");
 	}
 
-	public override void Run()
+	public override async Task Run()
 	{
-		_data = File.ReadAllLines(Path.Combine(BasePath, _dataFile));
+		_data = await Downloader
+				//.GetInput(Year, 3, "Day03test.txt")
+				.GetInput(Year, 3)
+				.ConfigureAwait(false);
 
 		Puzzle1();
 		Puzzle2();
