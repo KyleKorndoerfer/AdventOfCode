@@ -2,7 +2,7 @@
 
 using Microsoft.Extensions.Options;
 
-public class Downloader : IDisposable
+internal class Downloader : IDisposable
 {
     private readonly HttpClient _http;
     private readonly string _dataPath;

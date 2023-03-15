@@ -4,7 +4,7 @@ using System.Text;
 
 using AdventOfCode;
 
-public class Day05 : PuzzleBase
+internal class Day05 : PuzzleBase
 {
 	private string[] _data;
 	private Stack<string>[] _stacks;

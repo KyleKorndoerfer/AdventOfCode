@@ -7,7 +7,7 @@ using AdventOfCode;
 /// <summary>
 /// Runs Advent of Code puzzles for 2022.
 /// </summary>
-public class AdventOfCode2022 : IPuzzleYear
+internal class AdventOfCode2022 : IPuzzleYear
 {
 	private const string AocDayPrefix = "Day";
 	private const int Year = 2022;

@@ -3,7 +3,7 @@
 /// <summary>
 /// Collection of utility methods.
 /// </summary>
-public static class Utils
+internal static class Utils
 {
     /// <summary>New Line character for the current platform.</summary>
     public static string NL = Environment.NewLine;

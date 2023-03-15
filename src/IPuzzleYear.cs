@@ -1,6 +1,6 @@
 namespace AdventOfCode;
 
-public interface IPuzzleYear
+internal interface IPuzzleYear
 {
 	Task Run();
 }

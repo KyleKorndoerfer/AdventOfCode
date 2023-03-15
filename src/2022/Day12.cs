@@ -2,7 +2,7 @@ namespace AdventOfCode2022;
 
 using AdventOfCode;
 
-public class Day12 : PuzzleBase
+internal class Day12 : PuzzleBase
 {
 	private string[] _data;
 

@@ -3,7 +3,7 @@
 /// <summary>
 /// Provide base structure for all Puzzles.
 /// </summary>
-public abstract class PuzzleBase : IPuzzle
+internal abstract class PuzzleBase : IPuzzle
 {
     /// <summary>
     /// Initializes a new instance.
