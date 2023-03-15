@@ -2,7 +2,7 @@ namespace AdventOfCode2022;
 
 using AdventOfCode;
 
-public class Day06 : PuzzleBase
+internal class Day06 : PuzzleBase
 {
 	/* Other sample inputs:
 	 *		bvwbjplbgvbhsrlpgdmjqwftvncz

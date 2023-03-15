@@ -2,7 +2,7 @@ namespace AdventOfCode2022;
 
 using AdventOfCode;
 
-public class Day09 : PuzzleBase
+internal class Day09 : PuzzleBase
 {
 	private const int ShortRopeLength = 2;
 	private const int LongRopeLength = 10;

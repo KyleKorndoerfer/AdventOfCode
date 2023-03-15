@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 /// <summary>
 /// Root runner for the Advent of Code puzzles.
 /// </summary>
-public class Runner
+internal class Runner
 {
     /// <summary>Prefix for the 'Year' classes.</summary>
     private const string AocPrefix = "AdventOfCode";

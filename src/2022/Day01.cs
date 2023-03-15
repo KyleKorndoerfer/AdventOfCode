@@ -4,7 +4,7 @@ using System.Linq;
 
 using AdventOfCode;
 
-public class Day01 : PuzzleBase
+internal class Day01 : PuzzleBase
 {
 	private string[] _data;
 

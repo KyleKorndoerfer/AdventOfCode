@@ -2,7 +2,7 @@ namespace AdventOfCode2022;
 
 using AdventOfCode;
 
-public class Day03 : PuzzleBase
+internal class Day03 : PuzzleBase
 {
 	private const string PosValues = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 

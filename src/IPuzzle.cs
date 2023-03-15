@@ -1,6 +1,6 @@
 namespace AdventOfCode;
 
-public interface IPuzzle
+internal interface IPuzzle
 {
 	Task Run();
 }

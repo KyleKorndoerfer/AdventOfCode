@@ -5,7 +5,7 @@ using System.Security;
 /// <summary>
 /// Holds all of the application settings.
 /// </summary>
-public class Settings
+internal class Settings
 {
     /// <summary>
     /// The name of the section the settings belong to in the loaded configurations. 
