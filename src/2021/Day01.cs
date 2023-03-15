@@ -37,7 +37,7 @@ internal class Day01 : PuzzleBase
             }
         }
 
-        Utils.WriteResults($"Puzzle 1 Result: {count}");
+        Utils.WriteResults($"Puzzle 1: {count}");
     }
 
     private void Puzzle2()
@@ -55,6 +55,6 @@ internal class Day01 : PuzzleBase
             }
         }
 
-        Utils.WriteResults($"Puzzle 2 Result: {count}");
+        Utils.WriteResults($"Puzzle 2: {count}");
     }
 }
