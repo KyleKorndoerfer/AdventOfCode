@@ -39,14 +39,14 @@ internal class Runner
         var puzzleYears = Assembly
             .GetExecutingAssembly()
             .GetTypes()
-            .Where(x => x.GetInterfaces().Contains(typeof(IPuzzleYear)))
-            .OrderBy(x => x)
+            .Where(t => t.GetInterfaces().Contains(typeof(IPuzzleYear)) && t.Name != "PuzzleYearBase")
+            .OrderBy(t => t.Name)
             .ToList();
 
         // filter down to single year (if specified)
         if (_settings.AocYear != default)
         {
-            puzzleYears = puzzleYears.Where(_ => _.Name == $"{AocPrefix}{_settings.AocYear}").ToList();
+            puzzleYears = puzzleYears.Where(t => t.Name == $"{AocPrefix}{_settings.AocYear}").ToList();
         }
 
         foreach (var puzzleYear in puzzleYears)
