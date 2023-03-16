@@ -96,7 +96,7 @@ internal class Day04 : PuzzleBase
         }
     }
 
-    internal class Board
+    private class Board
     {
         private const int ROWS = 5;
         private const int COLS = 5;
@@ -221,7 +221,7 @@ internal class Day04 : PuzzleBase
         }
     }
     
-    internal class Square
+    private class Square
     {
         public int Value { get; }
         
