@@ -8,7 +8,7 @@ internal class Day03 : PuzzleBase
 
     public Day03(int year, Downloader downloader) : base(year, downloader)
     {
-        Utils.WriteDayHeader("Day 3: Toboggan Trajectory");
+        Utils.WriteDayHeader("Day 3 - Toboggan Trajectory");
     }
 
     public override async Task Run()
