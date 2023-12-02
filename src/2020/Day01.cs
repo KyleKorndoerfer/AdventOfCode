@@ -17,7 +17,7 @@ internal class Day01 : PuzzleBase
         _data = await Downloader
             //.GetInput(Year, 1, "Day01test.txt")
             .GetInput(Year, 1)
-            .ConfigureAwait(false);;
+            .ConfigureAwait(false);
      
         _input = _data.Select(x => Convert.ToInt32(x)).ToList();
         
