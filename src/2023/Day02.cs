@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace AdventOfCode2023;
 
 using AdventOfCode;
