@@ -52,7 +52,13 @@ internal class Runner
         foreach (var puzzleYear in puzzleYears)
         {
             var instance = Activator.CreateInstance(puzzleYear, _settings, _downloader) as IPuzzleYear;
+            
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            
             await instance.Run().ConfigureAwait(false); 
+            
+            watch.Stop();
+            Utils.WriteTiming(watch.ElapsedMilliseconds);
         }
     }
 }

@@ -46,6 +46,15 @@ internal static class Utils
     }
 
     /// <summary>
+    /// Outputs the time it took to solve all of the puzzles.
+    /// </summary>
+    /// <param name="ms"></param>
+    public static void WriteTiming(long ms)
+    {
+        Console.WriteLine($"     > Time: {ms}ms");
+    }
+
+    /// <summary>
     /// Outputs a DEBUG line.
     /// </summary>
     /// <param name="message">The message to display.</param>
