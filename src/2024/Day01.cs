@@ -7,9 +7,9 @@ using AdventOfCode;
 internal class Day01 : PuzzleBase
 {
     private string[] _data;
-    
-    List<int> _list1 = new();
-    List<int> _list2 = new();
+
+    readonly List<int> _left = new();
+    readonly List<int> _right = new();
 
     public Day01(int year, Downloader downloader) : base(year, downloader)
     {
@@ -24,33 +24,11 @@ internal class Day01 : PuzzleBase
             .ConfigureAwait(false);
 
         LoadLists();
-        
-        Puzzle1();
-        Puzzle2();
-    }
 
-    private void Puzzle1()
-    {
-        var sortedList1 = _list1.OrderBy(x => x).ToList();
-        var sortedList2 = _list2.OrderBy(x => x).ToList();
-
-        long distance = 0;
-        for (var i = 0; i < _data.Length; i++)
-        {
-            distance += Math.Abs(sortedList1[i] - sortedList2[i]);
-        }
-        
+        long distance = _left.Select((l, idx) => Math.Abs(l - _right[idx])).Sum();
         Utils.WriteResults($"Puzzle 1: {distance}");
-    }
-    
-    private void Puzzle2()
-    {
-        long similarity = 0;
-        for (var i = 0; i < _data.Length; i++)
-        {
-            similarity += _list2.Count(x => x == _list1[i]) * _list1[i];
-        }
         
+        long similarity = _left.Sum(l => l * _right.Count(r => r == l));
         Utils.WriteResults($"Puzzle 2: {similarity}");
     }
 
@@ -60,8 +38,11 @@ internal class Day01 : PuzzleBase
         foreach (var line in _data)
         {
             var m = reg.Match(line);
-            _list1.Add(Int32.Parse(m.Groups[1].Value));
-            _list2.Add(Int32.Parse(m.Groups[2].Value));
+            _left.Add(Int32.Parse(m.Groups[1].Value));
+            _right.Add(Int32.Parse(m.Groups[2].Value));
         }
+        
+        _left.Sort();
+        _right.Sort();
     }
 }

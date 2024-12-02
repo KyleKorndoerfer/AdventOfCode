@@ -118,7 +118,7 @@ internal class Day07 : PuzzleBase
 
         private int DetermineModifiedRanking(string cards)
         {
-            
+            return 0;
         }
     }
     
