@@ -1,6 +1,6 @@
-using System.Text.RegularExpressions;
-
 namespace AdventOfCode2024;
+
+using System.Text.RegularExpressions;
 
 using AdventOfCode;
 
