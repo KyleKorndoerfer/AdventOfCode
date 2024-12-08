@@ -6,14 +6,12 @@ internal class Day06 : PuzzleBase
 {
     private string[] _data;
 
-    private const string Obstruction = "#";
+    private List<string> Obstacles = new() { "#", "O" };
     private string VisitedSymbol = '\u2713'.ToString();
     
     private string[,] _map;
     private int _mapHeight;
     private int _mapWidth;
-    
-    private HashSet<(int, int)> _visited = new();
     
     private (int startRow, int startCol) _startingPosition;
     
@@ -45,63 +43,70 @@ internal class Day06 : PuzzleBase
             .GetInput(Year, 6)
             .ConfigureAwait(false);
 
-        LoadMap();
-        // PrintMap();
+        _mapHeight = _data.Length;
+        _mapWidth = _data[0].Length;
         
-        Puzzle1();
-        //Puzzle2();
+        var visited = Puzzle1();
+        Puzzle2(visited);
     }
 
-    private void Puzzle1()
+    private HashSet<(int, int)> Puzzle1()
     {
-        var inbound = true;
-        var dir = 0;
-        
-        var row = _startingPosition.startRow;
-        var col = _startingPosition.startCol;
+        LoadMap();
+        //PrintMap("** Part 1: Initialized **");
 
-        do
+        (HashSet<(int row, int col)> visited, bool _) result = WalkTheMap();
+        //PrintMap("Part 1: Result");
+        
+        Utils.WriteResults($"Puzzle 1: {result.visited.Count}");
+        return result.visited;
+    }
+    
+    private void Puzzle2(HashSet<(int row, int col)> visited)
+    {
+        HashSet<(int row, int col)> obstaclesAdded = new();
+
+        var visitedCopy = new HashSet<(int row, int col)>(visited);
+        
+        // for each visited position
+        foreach (var visitedCell in visitedCopy)
         {
-            // add current position as visited
-            _visited.Add((row, col));
-            _map[row, col] = VisitedSymbol;
-            
-            // move (if possible)
-            if (MoveIsWithinBounds(row, col, _directions[dir]))
+            // for each adjacent cell
+            foreach (var direction in _directions)
             {
-                while (Blocked(row, col, _directions[dir]))
+                // load the map
+                LoadMap();
+                
+                // place an obstacle in an adjacent cell (if valid)
+                if (MoveIsWithinBounds(visitedCell.row, visitedCell.col, direction) && 
+                    !Blocked(visitedCell.row, visitedCell.col, direction) &&
+                    !(visitedCell.row + direction.row == _startingPosition.startRow && visitedCell.col + direction.col == _startingPosition.startCol))
                 {
-                    // turn right
-                    dir = (dir + 1) % 4;
+                    _map[visitedCell.row + direction.row, visitedCell.col + direction.col] = "O";
+                }
+                else
+                {
+                    continue;
                 }
                 
-                // move
-                row += _directions[dir].row;
-                col += _directions[dir].col;
-                
-                _map[row, col] = _dirSymbols[dir];
-            }
-            else
-            {
-                inbound = false;
-            }
+                //PrintMap($"** Obstacle ({visitedCell.row + direction.row}, {visitedCell.col + direction.col}): Start **");
 
-            // PrintMap();
-        } while (inbound);
+                // walk the map and check for a loop
+                (HashSet<(int row, int col)> _, bool loopDetected) result = WalkTheMap();
+                //PrintMap($"** Obstacle ({visitedCell.row + direction.row}, {visitedCell.col + direction.col}): Result = {(result.loopDetected ? "LOOP" : "no loop")} **");
+
+                if (result.loopDetected)
+                {
+                    obstaclesAdded.Add((visitedCell.row + direction.row, visitedCell.col + direction.col));
+                }
+            }
+        }
         
-        Utils.WriteResults($"Puzzle 1: {_visited.Count}");
-    }
-
-    private void Puzzle2()
-    {
-        Utils.WriteResults($"Puzzle 2: ");
+        Utils.WriteResults($"Puzzle 2: {obstaclesAdded.Count}");
     }
 
     private void LoadMap()
     {
-        _mapHeight = _data.Length;
-        _mapWidth = _data[0].Length;
-        
         _map = new string[_mapHeight, _mapWidth];
         
         for (var r = 0; r < _mapHeight; r++)
@@ -120,6 +125,57 @@ internal class Day06 : PuzzleBase
         }
     }
 
+    private (HashSet<(int row, int col)> visited, bool loopDetected) WalkTheMap()
+    {
+        var inbound = true;
+        var dir = 0;
+        
+        var row = _startingPosition.startRow;
+        var col = _startingPosition.startCol;
+
+        HashSet<(int, int)> visited = new();
+        HashSet<(int row, int col, int dir)> turns = new();
+        bool loopDetected = false;
+        
+        do
+        {
+            // add current position as visited
+            visited.Add((row, col));
+            _map[row, col] = VisitedSymbol;
+            
+            // move (if possible)
+            if (MoveIsWithinBounds(row, col, _directions[dir]))
+            {
+                while (Blocked(row, col, _directions[dir]))
+                {
+                    // turn right
+                    dir = (dir + 1) % 4;
+
+                    if (turns.Contains((row, col, dir)))
+                    {
+                        loopDetected = true;
+                    }
+                    
+                    turns.Add((row, col, dir));
+                }
+                
+                // move
+                row += _directions[dir].row;
+                col += _directions[dir].col;
+                
+                _map[row, col] = _dirSymbols[dir];
+            }
+            else
+            {
+                inbound = false;
+            }
+
+            //PrintMap();
+        } while (inbound && loopDetected == false);
+
+        return (visited, loopDetected);
+    }
+    
     private bool MoveIsWithinBounds(int row, int col, (int row, int col) direction)
     {
         var newRow = row + direction.row;
@@ -133,12 +189,12 @@ internal class Day06 : PuzzleBase
         var newRow = row + direction.row;
         var newCol = col + direction.col;
         
-        return _map[newRow, newCol] == Obstruction;
+        return Obstacles.Contains(_map[newRow, newCol]);
     }
 
-    private void PrintMap()
+    private void PrintMap(string header = "")
     {
-        Console.WriteLine();
+        Console.WriteLine(header);
         for (var r = 0; r < _mapHeight; r++)
         {
             for (var c = 0; c < _mapWidth; c++)
